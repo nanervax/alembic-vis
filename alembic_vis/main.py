@@ -1,6 +1,8 @@
+import os
 import re
 import sys
 import select
+import time
 from collections import namedtuple
 from typing import List
 
@@ -53,7 +55,13 @@ class AlembicHistoryAnalyzer:
             dot.node(node.name, node.comment)
         
         dot.edges([(edge.from_node, edge.to_node) for edge in edges])
-        dot.render('migrations', view=True, cleanup=True, format='pdf')
+        rendered_path = dot.render('migrations', view=True, cleanup=True, format='pdf')
+        try:
+            # TODO: improve this method
+            time.sleep(2)
+            os.remove(rendered_path)
+        except OSError:
+            print('Can not remove tmp file')
 
 
 def run():
