@@ -13,7 +13,7 @@ setup(
     python_requires='>=3.7',
     entry_points={
         'console_scripts': [
-            'alembic_vis = alembic_vis.main:entry_point',
+            'alembic_vis = alembic_vis.main:run',
         ],
     },
 )

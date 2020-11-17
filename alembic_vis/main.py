@@ -13,7 +13,7 @@ class AlembicHistoryAnalyzer:
     HistoryEntry = namedtuple('HistoryEntry', ('from_node', 'to_node', 'comment'))
     Node = namedtuple('Node', ('name', 'comment'))
     Edge = namedtuple('Edge', ('from_node', 'to_node'))
-    
+
     @classmethod
     def make_nodes(cls, history: List[HistoryEntry]):
         nodes = set()
@@ -25,7 +25,7 @@ class AlembicHistoryAnalyzer:
             nodes.add(cls.Node(entry.to_node.strip(), f'{node_name} ({entry.comment})'))
         
         return nodes
-    
+
     @classmethod
     def make_edges(cls, history: List[HistoryEntry]):
         edges = []
@@ -34,7 +34,7 @@ class AlembicHistoryAnalyzer:
                 [cls.Edge(from_node.strip(), entry.to_node.strip()) for from_node in entry.from_node.split(',')])
         
         return edges
-    
+
     @classmethod
     def show_graph(cls, alembic_history):
         history = []
@@ -44,24 +44,26 @@ class AlembicHistoryAnalyzer:
         
         nodes = cls.make_nodes(history)
         edges = cls.make_edges(history)
+        if not nodes:
+            print('Nodes not found')
+            return
         
         dot = Digraph(comment='Alembic migrations')
         for node in nodes:
             dot.node(node.name, node.comment)
         
         dot.edges([(edge.from_node, edge.to_node) for edge in edges])
-        dot.render('migrations.gv', view=True, cleanup=True)
+        dot.render('migrations', view=True, cleanup=True, format='pdf')
 
 
 def run():
     i, o, e = select.select([sys.stdin], [], [], 1)
     if i:
         alembic_history = sys.stdin.read()
+        AlembicHistoryAnalyzer.show_graph(alembic_history)
     else:
         print('No input')
         exit(1)
-    
-    AlembicHistoryAnalyzer.show_graph(alembic_history)
 
 
 if __name__ == '__main__':
