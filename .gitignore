@@ -1,0 +1,10 @@
+/.idea/
+/.project
+/.pydevproject
+*~
+venv
+*.pyc
+*.pyo
+/*.egg-info
+/build
+/dist
