@@ -1,7 +1,11 @@
 ## Alembic migrations visualizer
 
 ### Installation
-pip install git+https://github.com/nanervax/alembic-vis.git
+The tool is based on graphviz project  
+Follow the instructions first https://www.graphviz.org/download/  
+The next step is  
+**pip install git+https://github.com/nanervax/alembic-vis.git**  
+
 
 ### Usage
 **Just use pipe feature:**  
